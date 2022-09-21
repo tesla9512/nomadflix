@@ -179,6 +179,7 @@ function Header() {
           </motion.svg>
           <Input
             transition={{ type: "linear" }}
+            initial={{ scaleX: 0 }}
             animate={inputAnime}
             placeholder="search for the tv show"
           />

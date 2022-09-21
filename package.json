@@ -13,6 +13,7 @@
     "@types/styled-components": "^5.1.26",
     "framer-motion": "^7.3.5",
     "gh-pages": "^4.0.0",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.35.0",
@@ -50,5 +51,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://tesla9512.github.io/nomadflix"
+  "homepage": "https://tesla9512.github.io/nomadflix",
+  "devDependencies": {
+    "@types/lodash": "^4.14.185"
+  }
 }
