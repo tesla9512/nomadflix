@@ -1,9 +1,11 @@
 import { motion, useAnimation, useScroll } from "framer-motion";
-import { useEffect, useState } from "react";
-import { Link, useMatch } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Nav = styled(motion.nav)`
+  z-index: 99;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,7 +48,7 @@ const Item = styled.li`
   }
 `;
 
-const Search = styled.span`
+const Search = styled.form`
   color: white;
   display: flex;
   align-items: center;
@@ -97,13 +99,17 @@ const logoVariants = {
 };
 
 const navVariants = {
-  top: {
+  scroll: {
     backgroundColor: "rgba(0,0,0,1)",
   },
-  scroll: {
+  top: {
     backgroundColor: "rgba(0,0,0,0)",
   },
 };
+
+interface IForm {
+  keyword: string;
+}
 
 function Header() {
   const homeMatch = useMatch("");
@@ -119,18 +125,25 @@ function Header() {
     }
 
     setSearchOpened((prev) => !prev);
+    setFocus("keyword");
   };
   const { scrollY } = useScroll();
 
   useEffect(() => {
     scrollY.onChange((value) => {
-      if (value > 80) {
+      if (value < 40) {
         navAnime.start("top");
       } else {
         navAnime.start("scroll");
       }
     });
   }, [scrollY, navAnime]);
+
+  const navigate = useNavigate();
+  const { register, handleSubmit, setFocus } = useForm<IForm>();
+  const onValid = (data: IForm) => {
+    navigate(`/search?keyword=${data.keyword}`);
+  };
 
   return (
     <Nav variants={navVariants} animate={navAnime}>
@@ -162,7 +175,7 @@ function Header() {
         </Items>
       </Col>
       <Col>
-        <Search>
+        <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
             onClick={toggleSearch}
             animate={{ x: isSearchOpened ? -215 : 0 }}
@@ -178,6 +191,7 @@ function Header() {
             ></path>
           </motion.svg>
           <Input
+            {...register("keyword", { required: true, minLength: 2 })}
             transition={{ type: "linear" }}
             initial={{ scaleX: 0 }}
             animate={inputAnime}
