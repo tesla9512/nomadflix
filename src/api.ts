@@ -4,6 +4,7 @@ const BASE_PATH = "https://api.themoviedb.org/3";
 
 interface IMovie {
   id: number;
+  adult: boolean;
   backdrop_path: string;
   poster_path: string;
   title: string;
@@ -21,8 +22,16 @@ export interface IGetMovieResult {
   total_results: number;
 }
 
-export function getMovies() {
-  return fetch(
+export async function getMovies() {
+  const response = await fetch(
     `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`
-  ).then((response) => response.json());
+  );
+  return await response.json();
 }
+
+// export async function getDeatilMovie(moiveId: string) {
+//   const response = await fetch(
+//     `${BASE_PATH}/movie/${moiveId}?api_key=${API_KEY}&language=en-US`
+//   );
+//   return await response.json();
+// }

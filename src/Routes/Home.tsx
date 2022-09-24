@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
-import { PathMatch, useMatch, useNavigate } from "react-router-dom";
+import { Link, PathMatch, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getMovies, IGetMovieResult } from "../api";
 import useWindow from "../useWindow";
@@ -10,7 +10,7 @@ import { makeImagePath } from "../utils";
 const Wrapper = styled.div`
   background: black;
   overflow-x: hidden;
-  padding-bottom: 200px;
+  padding-bottom: 300px;
 `;
 
 const Loader = styled.div`
@@ -54,20 +54,24 @@ const Overview = styled.p`
 const Slider = styled.div`
   position: relative;
   width: 100%;
-  top: -100px;
+  top: 100px;
 `;
 
 const LR = styled(motion.svg)`
   position: absolute;
   width: 48px;
   top: 40px;
-  margin: 0 10px;
+  margin: 0 1.5vw;
   background: white;
   border-radius: 24px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 9px;
+  padding-right: 9px;
   cursor: pointer;
-  z-index: 3;
+  z-index: 1;
+  &:hover {
+    background: #96ee84;
+    fill: white;
+  }
 `;
 
 const Row = styled(motion.div)`
@@ -90,12 +94,12 @@ const Box = styled(motion.div)<{ bgimage: string }>`
   background-image: url(${(props) => props.bgimage});
   background-size: cover;
   background-position: center center;
-  &:first-child {
+  /* &:first-child {
     transform-origin: center left;
   }
   &:last-child {
     transform-origin: center right;
-  }
+  } */
 `;
 
 const Info = styled(motion.div)`
@@ -119,13 +123,13 @@ const Overlay = styled(motion.div)`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   opacity: 0;
+  z-index: 2;
 `;
 
 const Selected = styled(motion.div)`
   position: fixed;
-  width: 60vw;
-  height: 60vh;
-  background-color: gray;
+  width: 400px;
+  height: 600px;
   color: black;
   top: 10%;
   left: 0;
@@ -133,17 +137,64 @@ const Selected = styled(motion.div)`
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  z-index: 3;
+`;
+
+const SelectedOverlay = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 
 const SelectedImg = styled.img`
   position: absolute;
-  height: 100%;
 `;
 
 const SelectedTitle = styled.h3`
   font-weight: bold;
+  font-size: 30px;
+  color: white;
+  margin-top: 225px;
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  letter-spacing: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
+const SelectedOverview = styled.span`
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  display: inline;
+  text-align: center;
+  height: 200px;
+  margin: 330px 8px 0 8px;
+`;
+
+const SelectedDetail = styled.span`
+  color: white;
   font-size: 36px;
-  margin-left: 3%;
+  font-weight: bold;
+  width: 400px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  z-index: 4;
+  margin-top: 500px;
+  a {
+    width: 100%;
+    text-align: right;
+    margin-right: 24px;
+    &:hover {
+      color: #96ee84;
+    }
+  }
 `;
 
 const boxVariants = {
@@ -219,9 +270,9 @@ function Home() {
     moviePathMatch?.params.id &&
     data?.results.find((movie) => movie.id + "" === moviePathMatch?.params.id);
 
-  useEffect(() => {
-    console.log(window.innerWidth);
-  });
+  // useEffect(() => {
+  //   console.log(data);
+  // });
 
   return (
     <Wrapper>
@@ -314,11 +365,25 @@ function Home() {
                 <Selected layoutId={moviePathMatch.params.id}>
                   {selectedMovie && (
                     <>
+                      <SelectedOverlay />
                       <SelectedImg
                         alt="cover"
-                        src={makeImagePath(selectedMovie.poster_path, "w400")}
+                        src={makeImagePath(selectedMovie.backdrop_path, "w400")}
                       />
                       <SelectedTitle>{selectedMovie.title}</SelectedTitle>
+                      <SelectedOverview>
+                        {selectedMovie.overview.length > 300
+                          ? `${selectedMovie.overview.slice(0, 300)}...`
+                          : selectedMovie.overview}
+                      </SelectedOverview>
+                      <SelectedDetail>
+                        <Link
+                          to={`/movies/detail/${selectedMovie.id}`}
+                          state={selectedMovie.id}
+                        >
+                          Go Detail &nbsp; &gt;
+                        </Link>
+                      </SelectedDetail>
                     </>
                   )}
                 </Selected>
