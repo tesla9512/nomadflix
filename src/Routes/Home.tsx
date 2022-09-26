@@ -4,13 +4,13 @@ import { useQuery } from "react-query";
 import { Link, PathMatch, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getMovies, IGetMovieResult } from "../api";
-import useWindow from "../useWindow";
+// import useWindow from "../useWindow";
 import { makeImagePath } from "../utils";
 
 const Wrapper = styled.div`
   background: black;
   overflow-x: hidden;
-  padding-bottom: 300px;
+  padding-bottom: 220px;
 `;
 
 const Loader = styled.div`
@@ -41,27 +41,49 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-const Img = styled(motion.img)`
-  position: absolute;
-  right: 5%;
-`;
+// const Img = styled(motion.img)`
+//   position: absolute;
+//   max-width: 30%;
+//   height: auto;
+//   right: 5%;
+// `;
 
 const Overview = styled.p`
   font-size: 24px;
+  margin-bottom: 20px;
   width: 50%;
+`;
+
+const Detail = styled.span`
+  font-size: 36px;
+  font-style: oblique;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #ffe56f;
+  width: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  a:hover {
+    color: white;
+  }
 `;
 
 const Slider = styled.div`
   position: relative;
   width: 100%;
-  top: 100px;
+  margin-top: 20px;
+
+  span {
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 20px;
+  }
 `;
 
-const LR = styled(motion.svg)`
+const LR = styled.svg`
   position: absolute;
   width: 48px;
   top: 40px;
-  margin: 0 1.5vw;
+  margin: 60px 1.5vw;
   background: white;
   border-radius: 24px;
   padding-left: 9px;
@@ -82,7 +104,8 @@ const Row = styled(motion.div)`
   width: 85%;
   left: 0;
   right: 0;
-  margin: 0 auto;
+  margin: 20px auto;
+  z-index: 2;
 `;
 
 const Box = styled(motion.div)<{ bgimage: string }>`
@@ -163,7 +186,7 @@ const SelectedTitle = styled.h3`
   align-items: center;
   justify-content: center;
   text-align: center;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
@@ -179,8 +202,9 @@ const SelectedOverview = styled.span`
 
 const SelectedDetail = styled.span`
   color: white;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
+  font-style: oblique;
   width: 400px;
   height: 100px;
   display: flex;
@@ -191,6 +215,7 @@ const SelectedDetail = styled.span`
     width: 100%;
     text-align: right;
     margin-right: 24px;
+    letter-spacing: 2px;
     &:hover {
       color: #96ee84;
     }
@@ -200,8 +225,8 @@ const SelectedDetail = styled.span`
 const boxVariants = {
   idle: { scale: 1 },
   hover: {
-    scale: 1.5,
-    y: -36,
+    scale: 1.3,
+    y: -35,
     transition: {
       type: "tween",
       delay: 0.3,
@@ -234,7 +259,7 @@ const offset = 5;
 
 function Home() {
   const navigate = useNavigate();
-  const windowWidth = useWindow();
+  // const windowWidth = useWindow();
   const { data, isLoading } = useQuery<IGetMovieResult>(
     ["movies", "nowPlaying"],
     getMovies
@@ -270,10 +295,6 @@ function Home() {
     moviePathMatch?.params.id &&
     data?.results.find((movie) => movie.id + "" === moviePathMatch?.params.id);
 
-  // useEffect(() => {
-  //   console.log(data);
-  // });
-
   return (
     <Wrapper>
       {isLoading ? (
@@ -290,7 +311,7 @@ function Home() {
           >
             <Title>{data?.results[offset * index].title}</Title>
             <Overview>{data?.results[offset * index].overview}</Overview>
-            <Img
+            {/* <Img
               key={data?.results[offset * index].id}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -299,10 +320,18 @@ function Home() {
                 "w500"
               )}
               alt="cover"
-              style={windowWidth > 1072 ? { width: "20vw" } : { width: "30vw" }}
-            />
+            /> */}
+            <Detail>
+              <Link
+                to={`/movies/detail/${data?.results[offset * index].id}`}
+                state={data?.results[offset * index].id}
+              >
+                Go Detail &nbsp; &gt;
+              </Link>
+            </Detail>
           </Banner>
           <Slider>
+            <span>Now Playing</span>
             <LR
               onClick={() => slidePage(-1)}
               style={{ left: 0 }}
