@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/nomadflix/static/js/main.ec82ad55.js",
+    "index.html": "/nomadflix/index.html",
+    "main.ec82ad55.js.map": "/nomadflix/static/js/main.ec82ad55.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.ec82ad55.js"
+  ]
+}
