@@ -261,7 +261,7 @@ function Home() {
   const navigate = useNavigate();
   // const windowWidth = useWindow();
   const { data, isLoading } = useQuery<IGetMovieResult>(
-    ["movies", "nowPlaying"],
+    ["nowPlaying"],
     getMovies
   );
   const [index, setIndex] = useState(0);

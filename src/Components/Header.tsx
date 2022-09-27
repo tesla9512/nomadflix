@@ -113,7 +113,6 @@ interface IForm {
 
 function Header() {
   const homeMatch = useMatch("");
-  // const tvMatch = useMatch("/tv");
   const [isSearchOpened, setSearchOpened] = useState(false);
   const inputAnime = useAnimation();
   const navAnime = useAnimation();
@@ -142,7 +141,7 @@ function Header() {
   const navigate = useNavigate();
   const { register, handleSubmit, setFocus } = useForm<IForm>();
   const onValid = (data: IForm) => {
-    navigate(`/search?keyword=${data.keyword}`);
+    navigate(`/search?keyword=${data.keyword}&page=1`);
   };
 
   return (

@@ -46,6 +46,13 @@ export interface IGetMoiveDetail {
   poster_path: string;
 }
 
+export interface ISearch {
+  id: number;
+  release_date: string;
+  title: string;
+  poster_path: string;
+}
+
 export async function getMovies() {
   const response = await fetch(
     `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`
@@ -60,9 +67,9 @@ export async function getDeatilMovie(moiveId: string) {
   return await response.json();
 }
 
-export async function getSearchMovie(keyword: string) {
+export async function getSearchMovie(keyword: string, page: number) {
   const response = await fetch(
-    `${BASE_PATH}/search/movie?api_key=${API_KEY}&language=en-US&query=${keyword}&page=1&include_adult=false`
+    `${BASE_PATH}/search/movie?api_key=${API_KEY}&language=en-US&query=${keyword}&page=${page}&include_adult=false`
   );
   return await response.json();
 }

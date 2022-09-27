@@ -4,7 +4,6 @@ import Header from "./Components/Header";
 import Detail from "./Routes/Detail";
 import Home from "./Routes/Home";
 import Search from "./Routes/Search";
-import Tv from "./Routes/Tv";
 
 function App() {
   return (
@@ -16,7 +15,6 @@ function App() {
             <Route path="movies/:id" element={<Home />} />
           </Route>
           <Route path="movies/detail/:id" element={<Detail />} />
-          <Route path="/tv" element={<Tv />} />
           <Route path="/search" element={<Search />} />
         </Routes>
       </BrowserRouter>
