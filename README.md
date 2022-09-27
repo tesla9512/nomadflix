@@ -8,4 +8,4 @@
 
 ---
 
-> https://tesla9512.github.io/nomadflix/ (예정)
+> https://tesla9512.github.io/nomadflix/
